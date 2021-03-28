@@ -1,16 +1,10 @@
-import tensorflow as tf
+import tflite_runtime.interpreter as tflite
 import pandas as pd
 import cv2
 import time
 import numpy as np
 import os
 import glob2
-import random
-import shutil
-
-random.seed(42)
-
-class_names = ['Atelectasis', 'Cardiomegaly', 'Effusion', 'Infiltration', 'Mass', 'Nodule', 'Pneumonia', 'Pneumothorax', 'Consolidation', 'Edema', 'Emphysema', 'Fibrosis', 'Pleural_Thickening', 'Hernia']
 
 IMAGE_PATH = os.path.abspath('./test_images')
 WEIGHT_PATH = os.path.abspath('./weights/chexnet_kaggle_tflite_dynaic_quantization.tflite')
@@ -19,7 +13,7 @@ print(f"Total number of Images : {len(images)}")
 
 def evaluate_timing():
     total_time = 0
-    interpreter = tf.lite.Interpreter(model_path = WEIGHT_PATH)
+    interpreter = tflite.Interpreter(model_path = WEIGHT_PATH)
     interpreter.allocate_tensors()
     input_details = interpreter.get_input_details()[0]
     output_details = interpreter.get_output_details()[0]
